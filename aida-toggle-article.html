@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aida Xu — ล้มละลาย แล้วกลับมาใหม่</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=Sarabun:ital,wght@0,300;0,400;0,600;1,300&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --gold:#C8A84B; --gold-l:#E9D080; --gold-p:#F5E9BF; --gold-d:#6B5420;
+  --gold-glow:rgba(200,168,75,0.10); --cyan:#4DD9C0; --orange:#E07845;
+  --bg:#070604; --bg2:#0E0C08; --bg3:#161410;
+  --bdr:rgba(200,168,75,0.13); --bdr2:rgba(200,168,75,0.28);
+  --txt:#EDE6D5; --txt2:#96896E; --txt3:#48412E;
+}
+html { scroll-behavior:smooth; }
+body { background:var(--bg); color:var(--txt); font-size:18px; line-height:1.9; font-weight:300; overflow-x:hidden; }
+body.th-mode { font-family:'Sarabun',sans-serif; }
+body.en-mode { font-family:'EB Garamond',serif; }
+body::after {
+  content:''; position:fixed; inset:0; pointer-events:none; opacity:0.022; z-index:9999;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* TOGGLE */
+.lang-toggle {
+  position:fixed; top:28px; right:32px; z-index:1000;
+  display:flex; border:1px solid var(--bdr2);
+  background:rgba(7,6,4,0.92); backdrop-filter:blur(12px);
+}
+.lang-btn {
+  padding:11px 24px; font-size:11px; font-weight:600; letter-spacing:0.22em;
+  text-transform:uppercase; border:none; background:transparent; cursor:pointer;
+  transition:background 0.2s,color 0.2s; font-family:'Sarabun',sans-serif; color:var(--txt3);
+}
+.lang-btn.active { background:var(--gold-glow); color:var(--gold-l); }
+#btn-th.active { border-right:1px solid var(--bdr2); }
+#btn-en.active { border-left:1px solid var(--bdr2); }
+
+/* PAGE VISIBILITY */
+.page { display:none; opacity:0; transition:opacity 0.45s ease; }
+.page.visible { display:block; }
+.page.shown { opacity:1; }
+
+/* HERO */
+.hero {
+  min-height:100vh; display:grid; place-items:center;
+  position:relative; padding:120px 40px 100px; overflow:hidden; text-align:center;
+}
+.hero-bg {
+  position:absolute; inset:0;
+  background:radial-gradient(ellipse 80% 55% at 50% -5%,rgba(200,168,75,0.09) 0%,transparent 65%),
+             radial-gradient(ellipse 35% 35% at 85% 85%,rgba(77,217,192,0.04) 0%,transparent 60%);
+}
+.hero-grid {
+  position:absolute; inset:0;
+  background-image:linear-gradient(rgba(200,168,75,0.03) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(200,168,75,0.03) 1px,transparent 1px);
+  background-size:72px 72px;
+  mask-image:radial-gradient(ellipse 85% 85% at 50% 50%,black 5%,transparent 70%);
+}
+.orb { position:absolute; border-radius:50%; filter:blur(70px); pointer-events:none; animation:drift 20s ease-in-out infinite alternate; }
+.o1 { width:350px; height:350px; background:rgba(200,168,75,0.055); top:0; left:-8%; }
+.o2 { width:220px; height:220px; background:rgba(77,217,192,0.035); bottom:10%; right:2%; animation-delay:-8s; }
+.o3 { width:160px; height:160px; background:rgba(224,120,69,0.04); top:35%; right:18%; animation-delay:-14s; }
+@keyframes drift { from{transform:translate(0,0) scale(1);} to{transform:translate(25px,-35px) scale(1.08);} }
+
+.hero-inner { position:relative; max-width:880px; width:100%; }
+.eyebrow {
+  display:inline-flex; align-items:center; gap:14px; font-size:10px; font-weight:600;
+  letter-spacing:0.38em; text-transform:uppercase; color:var(--gold); margin-bottom:36px;
+  animation:fadeUp 0.8s 0.3s both;
+}
+.eline { width:38px; height:1px; background:var(--gold-d); }
+.scroll-cue {
+  position:absolute; bottom:40px; left:50%; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  color:var(--txt3); font-size:9px; letter-spacing:0.35em; text-transform:uppercase;
+  animation:fadeUp 1s 1.5s both;
+}
+.sline { width:1px; height:42px; background:linear-gradient(to bottom,var(--gold-d),transparent); animation:spulse 2.2s ease-in-out infinite; }
+@keyframes spulse { 0%,100%{opacity:0.35;} 50%{opacity:1;} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(22px);} to{opacity:1;transform:translateY(0);} }
+.divider { display:flex; align-items:center; gap:16px; justify-content:center; margin:24px 0 34px; }
+.divider::before { content:''; width:70px; height:1px; background:linear-gradient(90deg,transparent,var(--gold-d)); }
+.divider::after  { content:''; width:70px; height:1px; background:linear-gradient(90deg,var(--gold-d),transparent); }
+.diamond { width:6px; height:6px; background:var(--gold); transform:rotate(45deg); }
+
+/* WRAP */
+.wrap { max-width:760px; margin:0 auto; padding:90px 40px 160px; }
+.sec { margin-bottom:80px; }
+.ch { display:flex; align-items:center; gap:14px; margin-bottom:22px; }
+.ch-num { font-size:10px; font-weight:600; letter-spacing:0.32em; text-transform:uppercase; color:var(--gold-d); white-space:nowrap; }
+.ch-rule { flex:1; height:1px; background:var(--bdr); max-width:48px; }
+
+/* ─── TH STYLES ─── */
+#th-page h1 {
+  font-family:'Playfair Display',serif; font-size:clamp(36px,6.5vw,74px);
+  font-weight:700; line-height:1.1; letter-spacing:-0.02em; color:var(--txt);
+  animation:fadeUp 0.9s 0.5s both;
+}
+#th-page h1 em { font-style:italic; color:var(--gold-l); display:block; margin-top:8px; }
+#th-page .hero-sub {
+  margin:28px auto 0; max-width:640px; font-size:18px; font-weight:300;
+  color:var(--txt2); font-style:italic; line-height:1.8; font-family:'Sarabun',sans-serif;
+  animation:fadeUp 0.9s 0.75s both;
+}
+#th-page h2 { font-family:'Playfair Display',serif; font-size:clamp(22px,3.6vw,34px); font-weight:700; line-height:1.3; color:var(--txt); margin-bottom:26px; }
+#th-page h2 em { font-style:italic; color:var(--gold-l); }
+#th-page p { font-family:'Sarabun',sans-serif; font-weight:300; font-size:18px; color:#C8BFA8; line-height:2.05; margin-bottom:22px; }
+#th-page p strong { color:var(--txt); font-weight:600; }
+#th-page p em { color:var(--gold-l); font-style:italic; }
+#th-page .pq {
+  position:relative; padding:28px 34px 28px 46px; margin:48px 0;
+  background:linear-gradient(90deg,rgba(200,168,75,0.07),transparent 80%);
+  border-left:2px solid var(--gold);
+}
+#th-page .pq-mark { font-family:'Playfair Display',serif; font-size:88px; color:var(--gold-d); position:absolute; top:-12px; left:14px; line-height:1; opacity:0.45; pointer-events:none; }
+#th-page .pq p { font-family:'Playfair Display',serif; font-size:clamp(18px,2.4vw,23px); font-style:italic; color:var(--gold-p); margin:0; line-height:1.65; }
+#th-page .grief {
+  background:rgba(14,12,8,0.9); border:1px solid rgba(224,120,69,0.22);
+  border-left:3px solid var(--orange); padding:32px 36px; margin:46px 0;
+}
+#th-page .grief-label { font-size:10px; font-weight:600; letter-spacing:0.35em; text-transform:uppercase; color:var(--orange); margin-bottom:16px; font-family:'Sarabun',sans-serif; }
+#th-page .grief p { font-size:17px; color:#C8B0A0; }
+#th-page .lessons { margin:42px 0; }
+#th-page .lesson { display:grid; grid-template-columns:28px 1fr; gap:14px; padding:18px 0; border-bottom:1px solid var(--bdr); }
+#th-page .lesson:last-child { border-bottom:none; }
+#th-page .l-n { font-family:'Playfair Display',serif; font-size:22px; font-style:italic; color:var(--gold-d); line-height:1.2; padding-top:4px; }
+#th-page .card { background:var(--bg3); border:1px solid var(--bdr); padding:26px 30px; margin:42px 0; }
+#th-page .card-label { font-size:10px; font-weight:600; letter-spacing:0.35em; text-transform:uppercase; color:var(--cyan); margin-bottom:14px; font-family:'Sarabun',sans-serif; }
+#th-page .card p { font-size:16px; margin-bottom:12px; color:#B8B09A; }
+#th-page .card p:last-child { margin-bottom:0; }
+#th-page .pillars { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin:42px 0; }
+#th-page .pillar { background:var(--bg3); border:1px solid var(--bdr); padding:24px 16px; text-align:center; position:relative; overflow:hidden; }
+#th-page .pillar::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:transparent; transition:background 0.3s; }
+#th-page .pillar:hover::before { background:var(--gold); }
+#th-page .p-num { font-family:'Playfair Display',serif; font-size:36px; color:var(--gold-d); font-style:italic; display:block; line-height:1; margin-bottom:10px; }
+#th-page .p-title { font-size:14px; font-weight:600; color:var(--txt); margin-bottom:5px; font-family:'Sarabun',sans-serif; }
+#th-page .p-desc { font-size:13px; color:var(--txt2); line-height:1.6; font-family:'Sarabun',sans-serif; }
+
+/* ─── EN STYLES — Family of Light ─── */
+#en-page h1 {
+  font-family:'EB Garamond',serif; font-size:clamp(32px,5.5vw,66px);
+  font-weight:500; line-height:1.15; color:var(--txt);
+  animation:fadeUp 0.9s 0.5s both;
+}
+#en-page h1 .l1 { display:block; font-style:normal; }
+#en-page h1 .l2 { display:block; font-style:italic; color:var(--gold-l); font-size:0.7em; margin-top:10px; }
+#en-page h1 .l3 { display:block; font-family:'Bebas Neue',sans-serif; font-style:normal; font-size:0.38em; letter-spacing:0.22em; color:var(--txt3); margin-top:18px; }
+#en-page .hero-sub {
+  margin:28px auto 0; max-width:600px; font-family:'EB Garamond',serif;
+  font-size:19px; font-style:italic; color:var(--txt2); line-height:1.75;
+  animation:fadeUp 0.9s 0.75s both;
+}
+#en-page .hero-sub .tag { display:block; font-family:'Bebas Neue',sans-serif; font-style:normal; font-size:13px; letter-spacing:0.35em; color:var(--gold-d); margin-top:10px; }
+#en-page h2 { font-family:'EB Garamond',serif; font-size:clamp(22px,3.5vw,34px); font-weight:500; font-style:italic; line-height:1.3; color:var(--txt); margin-bottom:26px; }
+#en-page h2 .sub { display:block; font-family:'Bebas Neue',sans-serif; font-size:0.48em; font-style:normal; letter-spacing:0.3em; color:var(--gold-d); margin-top:8px; }
+#en-page p { font-family:'EB Garamond',serif; font-size:19px; color:#C8BFA8; line-height:1.95; margin-bottom:24px; }
+#en-page p strong { color:var(--txt); font-weight:500; }
+#en-page p em { font-style:italic; color:var(--gold-l); }
+/* verse block */
+#en-page .verse { padding:0 0 0 28px; border-left:2px solid var(--gold-d); margin:44px 0; }
+#en-page .verse p { font-family:'EB Garamond',serif; font-size:20px; font-style:italic; color:var(--gold-p); line-height:1.75; margin:0; }
+#en-page .verse .attr { display:block; margin-top:14px; font-family:'Bebas Neue',sans-serif; font-style:normal; font-size:11px; letter-spacing:0.3em; color:var(--gold-d); }
+/* manifesto box */
+#en-page .manifesto { background:var(--bg2); border:1px solid var(--bdr2); padding:38px 42px; margin:50px 0; position:relative; overflow:hidden; }
+#en-page .manifesto::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+#en-page .manifesto p { font-size:18px; color:#C8BFA8; margin-bottom:18px; }
+#en-page .manifesto p:last-child { margin-bottom:0; }
+#en-page .manifesto strong { display:block; margin-bottom:4px; font-family:'Bebas Neue',sans-serif; font-size:12px; letter-spacing:0.3em; color:var(--gold); font-weight:400; }
+/* stanza */
+#en-page .stanza { margin:48px 0; }
+#en-page .stanza-line { font-family:'EB Garamond',serif; font-size:20px; font-style:italic; color:var(--txt); line-height:1.6; display:block; border-bottom:1px solid rgba(200,168,75,0.07); padding:12px 0; }
+#en-page .stanza-line.muted { color:var(--txt2); font-size:17px; }
+#en-page .stanza-line.gold { color:var(--gold-l); }
+#en-page .stanza-line.hit { color:var(--txt); font-size:23px; font-style:normal; font-weight:500; font-family:'Playfair Display',serif; }
+/* pillars EN */
+#en-page .pillars { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin:46px 0; }
+#en-page .pillar { background:var(--bg3); border:1px solid var(--bdr); padding:26px 18px; position:relative; overflow:hidden; }
+#en-page .pillar::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:transparent; transition:background 0.3s; }
+#en-page .pillar:hover::before { background:var(--gold); }
+#en-page .p-word { font-family:'Bebas Neue',sans-serif; font-size:30px; letter-spacing:0.06em; color:var(--gold-d); display:block; line-height:1; margin-bottom:10px; }
+#en-page .p-title { font-family:'EB Garamond',serif; font-size:14px; font-style:italic; color:var(--txt); margin-bottom:5px; }
+#en-page .p-desc { font-family:'EB Garamond',serif; font-size:13px; font-style:italic; color:var(--txt2); line-height:1.6; }
+
+/* SHARED CLOSING */
+.closing {
+  position:relative; background:var(--bg2); border:1px solid var(--bdr2);
+  padding:70px 52px; margin-top:80px; text-align:center; overflow:hidden;
+}
+.closing::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+.closing-orb { position:absolute; width:280px; height:280px; border-radius:50%; background:radial-gradient(circle,rgba(200,168,75,0.06),transparent 70%); top:-80px; right:-60px; pointer-events:none; }
+.closing-label { font-size:10px; font-weight:600; letter-spacing:0.38em; text-transform:uppercase; color:var(--gold-d); margin-bottom:26px; }
+#th-page .closing-title { font-family:'Playfair Display',serif; font-size:clamp(20px,3.5vw,32px); font-weight:700; color:var(--txt); margin-bottom:14px; line-height:1.35; }
+#th-page .closing-title em { font-style:italic; color:var(--gold-l); }
+#en-page .closing-title { font-family:'EB Garamond',serif; font-size:clamp(20px,3.2vw,30px); font-style:italic; font-weight:400; color:var(--txt); margin-bottom:14px; line-height:1.4; }
+#en-page .closing-title em { font-style:normal; color:var(--gold-l); }
+.closing-body { max-width:500px; margin:0 auto 34px; font-size:17px; color:var(--txt2); line-height:1.85; }
+#th-page .closing-body { font-family:'Sarabun',sans-serif; font-weight:300; }
+#en-page .closing-body { font-family:'EB Garamond',serif; font-style:italic; }
+.cta { display:inline-block; background:transparent; color:var(--gold-l); border:1px solid var(--gold); padding:14px 44px; font-size:12px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; text-decoration:none; font-family:'Sarabun',sans-serif; transition:background 0.25s; }
+.cta:hover { background:var(--gold-glow); }
+footer { border-top:1px solid var(--bdr); max-width:760px; margin:0 auto; padding:28px 40px; display:flex; justify-content:space-between; align-items:center; font-size:11px; color:var(--txt3); letter-spacing:0.12em; }
+footer span { color:var(--gold-d); }
+@media(max-width:640px) {
+  .hero,.wrap { padding-left:22px; padding-right:22px; }
+  #th-page .pillars,#en-page .pillars { grid-template-columns:1fr; }
+  .closing { padding:46px 22px; }
+  .lang-toggle { top:16px; right:16px; }
+  #th-page .pq,#en-page .verse { padding-left:22px; }
+}
+</style>
+</head>
+<body class="th-mode">
+
+<nav class="lang-toggle">
+  <button class="lang-btn active" id="btn-th" onclick="switchLang('th')">🇹🇭 ไทย</button>
+  <button class="lang-btn" id="btn-en" onclick="switchLang('en')">🇺🇸 English</button>
+</nav>
+
+<!-- ════════ TH PAGE ════════ -->
+<div id="th-page" class="page visible shown">
+  <section class="hero">
+    <div class="hero-bg"></div><div class="hero-grid"></div>
+    <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+    <div class="hero-inner">
+      <div class="eyebrow"><span class="eline"></span>บทความเปิดตัว · 2026<span class="eline"></span></div>
+      <h1>ฉันล้มละลาย<em>แล้วกลับมาใหม่ — แต่ไม่ใช่คนเดิม</em></h1>
+      <div class="divider"><span class="diamond"></span></div>
+      <p class="hero-sub">เรื่องจริงของคนที่สูญเสียทุกอย่าง เจ็บจนแทบลืมหายใจ<br>แล้วค้นพบว่าสิ่งที่หายไปนั้น — ไม่เคยเป็น "ตัวเธอ" เลยสักวัน</p>
+    </div>
+    <div class="scroll-cue"><div class="sline"></div>เลื่อนลง</div>
+  </section>
+
+  <main class="wrap">
+    <section class="sec">
+      <div class="ch"><span class="ch-num">01 — ก่อนทุกอย่างจะพัง</span><span class="ch-rule"></span></div>
+      <h2>ตอนที่ฉันคิดว่า <em>"ฉันเข้าใจเกมแล้ว"</em></h2>
+      <p>มีช่วงหนึ่งในชีวิตที่ฉันแตะอะไรก็เป็นเงิน ยุค E-commerce เพิ่งระเบิด ของอะไรก็ขายได้ ยิงแอดก็ขึ้น ทำอะไรก็ปัง</p>
+      <p><strong>มันง่ายจนฉันโง่พอจะคิดว่า — นี่คือความสามารถของฉัน</strong></p>
+      <p>ฉันสร้างระบบ สร้างรายได้ สร้างตัวตน แต่ตัวตนนั้นไม่ได้สร้างจาก "ความจริง" มันสร้างจาก "ผลลัพธ์" และผลลัพธ์นั้นจะอยู่ได้ก็ต่อเมื่อกระแสพัดมาทิศที่ถูก</p>
+      <div class="pq">
+        <span class="pq-mark">"</span>
+        <p>ฉันไม่ได้ฉลาด — ฉันแค่<em>โชคดีที่อยู่ในยุคที่ถูกต้อง</em><br>แล้วก็เข้าใจผิดว่ามันคือความสามารถ</p>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="ch"><span class="ch-num">02 — วันที่ทุกอย่างพัง</span><span class="ch-rule"></span></div>
+      <h2>ฉัน<em>ล้มละลาย</em> — ใช่ คำนั้นแหละ ไม่ต้องสวย</h2>
+      <div class="grief">
+        <div class="grief-label">⬛ สิ่งที่เกิดขึ้นจริง</div>
+        <p>โควิดมา และทุกอย่างหยุด ธุรกิจพัง เงินหาย ระบบที่เคยคิดว่าแข็งแรง <strong>กลายเป็นศูนย์ในเวลาไม่นาน</strong></p>
+        <p>ฉันล้มละลาย<br>ฉันเลือกใช้คำนี้ตรงๆ ไม่มีภาษาสวยมาห่อ เพราะถ้ายังเรียกมันว่าอะไรอื่น — ฉันก็แค่โกหกตัวเองต่อไป</p>
+      </div>
+      <p>สิ่งที่เจ็บที่สุดไม่ใช่เรื่องเงิน มันคือการต้องยอมรับว่า <strong>ฉันไม่รู้จักตัวเองจริงๆ เลย</strong> ตลอดเวลาที่ผ่านมา ฉันวิ่งตามกระแส ไม่ได้วิ่งตามความเป็นตัวเอง</p>
+      <div class="lessons">
+        <div class="lesson"><span class="l-n">I</span><p><strong>เงินเร็ว ≠ เงินยั่งยืน</strong> — ความเร็วของรายได้บอกแค่ว่าตอนนี้กระแสพัดมาทิศนี้ ไม่ได้บอกว่าคุณแข็งแรง</p></div>
+        <div class="lesson"><span class="l-n">II</span><p><strong>ระบบที่พึ่ง external platform คือระบบที่เปราะบาง</strong> — algorithm เปลี่ยน, platform ตาย, คุณพังพร้อมกันทั้งหมด</p></div>
+        <div class="lesson"><span class="l-n">III</span><p><strong>โลกอยู่ในยุค "รอยต่อ" ตลอดเวลา</strong> — คนที่เห็นรอยต่อก่อนจะอยู่รอด คนที่เพิ่งเห็นตอนมันพัง จะต้องเริ่มใหม่จากศูนย์</p></div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="ch"><span class="ch-num">03 — ค้นพบตัวเอง</span><span class="ch-rule"></span></div>
+      <h2>เมื่อเงียบพอ <em>ความจริงก็เริ่มพูด</em></h2>
+      <p>ในช่วงที่ทุกอย่างล้มเหลว ฉันมีเวลาเงียบๆ มากพอที่จะถามคำถามที่ไม่เคยกล้าถามตัวเองมาก่อน <em>ฉันเก่งอะไรจริงๆ? ฉันรักอะไรจริงๆ? ถ้าเอาเงินออกจากสมการ — ฉันเป็นใคร?</em></p>
+      <div class="card">
+        <div class="card-label">สิ่งที่ค้นพบว่าตัวเองเป็น</div>
+        <p><strong>👁 ฉันอ่าน "คน" ออก</strong> — ฉันเห็นศักยภาพในคนที่เขายังไม่เห็นในตัวเอง เห็นว่าอะไรกำลังฉุดรั้งเขา และเขาต้องการอะไรจริงๆ</p>
+        <p><strong>⚙️ ฉันแปลง "ความคิด" เป็น "ระบบ"</strong> — ไอเดียดีที่อยู่ในหัวไม่มีค่าถ้าไม่มีใครทำให้มันทำงานได้จริง ฉันทำตรงนั้นได้</p>
+        <p><strong>🔥 ฉันติดใจ "ช่วยคน" มากกว่า "ทำเงิน"</strong> — moment ที่ทำให้ฉัน<em>ฟินที่สุด</em>คือเมื่อมีคนบอกว่า "ฉันรวยได้เพราะคุณ" ไม่ใช่ยอดขายของตัวเอง</p>
+      </div>
+      <div class="pq">
+        <span class="pq-mark">"</span>
+        <p>คุณมีแค่ "ไอเดีย" — <em>ฉันสร้าง "ธุรกิจ" ให้คุณได้</em></p>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="ch"><span class="ch-num">04 — อาวุธใหม่</span><span class="ch-rule"></span></div>
+      <h2>แล้ว AI เข้ามา <em>และปลดล็อกทุกอย่างในตัวฉัน</em></h2>
+      <p>ฉันเรียนรู้ AI ไม่ใช่เพราะมันคือ trend แต่เพราะมันตอบคำถามที่ฉันมีมาตลอด <em>"ทำอย่างไรให้สิ่งที่อยู่ในหัวฉัน ออกมาเป็นของจริงได้เร็วขึ้น?"</em></p>
+      <p>ไอเดีย → คอร์ส / ความคิด → คอนเทนต์ / กลยุทธ์ → ระบบขาย</p>
+      <p>AI ไม่ได้ทำให้ฉันเป็นคนใหม่ มัน <strong>ปลดล็อกตัวตนที่มีอยู่แล้วในฉัน</strong> ทำให้สิ่งที่เคยอยู่แค่ในความคิด กลายเป็นความจริงที่จับต้องได้</p>
+    </section>
+
+    <section class="sec">
+      <div class="ch"><span class="ch-num">05 — กลับมา</span><span class="ch-rule"></span></div>
+      <h2>คัมแบ็กรอบนี้ <em>ไม่ใช่เพื่อพิสูจน์ให้ใครเห็น</em></h2>
+      <p>ฉันไม่ได้กลับมาเพื่อ "รวยเร็ว" ฉันกลับมาเพื่อสร้างสิ่งที่มีความหมาย บนรากที่แข็งแรง จากของจริงที่มีในตัวเอง</p>
+      <div class="pillars">
+        <div class="pillar"><span class="p-num">I</span><p class="p-title">ระบบ</p><p class="p-desc">สร้างสิ่งที่ทำงานได้แม้ฉันหยุดพัก</p></div>
+        <div class="pillar"><span class="p-num">II</span><p class="p-title">ความยั่งยืน</p><p class="p-desc">จากรากที่แท้จริง ไม่ใช่จากกระแส</p></div>
+        <div class="pillar"><span class="p-num">III</span><p class="p-title">ความหมาย</p><p class="p-desc">ทำแล้วภูมิใจ แม้ไม่มีเงิน</p></div>
+      </div>
+      <p>รอบนี้จะไม่ใช่แค่ "รวย" — มันจะ <em>สนุก</em> และมันจะ <em>มีความหมาย</em></p>
+    </section>
+
+    <div class="closing">
+      <div class="closing-orb"></div>
+      <div class="closing-label">— และนี่คือจุดเริ่มต้น —</div>
+      <p class="closing-title">ถ้าคุณรู้สึกว่าตัวเองมีของ แต่ยังไม่รู้จะเริ่ม<em>ยังไง</em></p>
+      <p class="closing-body">ฉันเคยอยู่ตรงนั้นมาก่อน ฉันรู้ว่ารู้สึกยังไงเมื่อมีไอเดียแต่ไม่มีระบบ ตอนนี้ฉันทำสิ่งที่ถนัดที่สุด: ช่วยให้คนเห็นศักยภาพของตัวเอง แล้วแปลงมันเป็นธุรกิจที่ยั่งยืน</p>
+      <a href="#" class="cta">เริ่มต้นด้วยกัน →</a>
+    </div>
+  </main>
+  <footer><span>AIDA XU</span><span style="color:var(--txt3)">บทความเปิดตัว · 2026</span></footer>
+</div>
+
+<!-- ════════ EN PAGE — FAMILY OF LIGHT ════════ -->
+<div id="en-page" class="page">
+  <section class="hero">
+    <div class="hero-bg"></div><div class="hero-grid"></div>
+    <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+    <div class="hero-inner">
+      <div class="eyebrow"><span class="eline"></span>Launch Essay · 2026<span class="eline"></span></div>
+      <h1>
+        <span class="l1">I went bankrupt.</span>
+        <span class="l2">Then I went searching for something money couldn't take.</span>
+        <span class="l3">— a reckoning, not a comeback —</span>
+      </h1>
+      <div class="divider"><span class="diamond"></span></div>
+      <p class="hero-sub">
+        Not a resurrection story.<br>The kind where you don't just rebuild — you burn the blueprint.
+        <span class="tag">Curated by the Family of Light</span>
+      </p>
+    </div>
+    <div class="scroll-cue"><div class="sline"></div>scroll</div>
+  </section>
+
+  <main class="wrap">
+    <section class="sec">
+      <div class="ch"><span class="ch-num">01 — Before the Fall</span><span class="ch-rule"></span></div>
+      <h2>I Mistook the Wind for Wings
+        <span class="sub">The Season I Confused Luck with Mastery</span>
+      </h2>
+      <p>Everything I touched turned gold. I called it skill. The market called it a bull run. Neither of us was lying — we were just talking about different things.</p>
+      <p>I built systems. I built income. I built a <em>self</em> out of results. The problem with a self built from outcomes is simple: when the outcomes stop, you don't know who you are anymore.</p>
+      <div class="verse">
+        <p>
+          "Being in the right river<br>
+          doesn't make you a great swimmer.<br>
+          It makes you lucky<br>
+          that the current ran your direction<br>
+          long enough<br>
+          to forget the difference."
+        </p>
+        <span class="attr">— The Aida Archives · Vol. I</span>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="ch"><span class="ch-num">02 — Zero</span><span class="ch-rule"></span></div>
+      <h2>Bankrupt. Say the Word. Don't Dress It Up.
+        <span class="sub">What the Pandemic Really Took</span>
+      </h2>
+      <p>The pandemic didn't break my business. It revealed what was already hollow. A house built on algorithm and trend has no foundation — it has an expiration date stamped on the inside, where you can't read it until it's too late.</p>
+      <div class="stanza">
+        <span class="stanza-line muted">They say what doesn't kill you makes you stronger.</span>
+        <span class="stanza-line">What they don't say is —</span>
+        <span class="stanza-line gold">first it strips you all the way down.</span>
+        <span class="stanza-line muted">All the way to nothing.</span>
+        <span class="stanza-line hit">Until the only thing left is what's real.</span>
+      </div>
+      <div class="manifesto">
+        <p><strong>Law I — Speed Is Not Strength</strong>Fast money is not strong money. A river that floods every spring also dries every summer. Velocity is not the same as depth.</p>
+        <p><strong>Law II — You Cannot Own What You Rent</strong>Most of us were renting our entire empire — the platform, the algorithm, the reach. None of it was ours. We were tenants calling ourselves landlords.</p>
+        <p><strong>Law III — Every Era Ends</strong>That's not tragedy. The tragedy is being the last one in the room to notice the lights went out.</p>
+      </div>
+      <p>The money was never the wound. The wound was simpler, deeper — <em>I had been performing a version of myself so long, I forgot there was an original underneath.</em></p>
+    </section>
+
+    <section class="sec">
+      <div class="ch"><span class="ch-num">03 — The Discovery</span><span class="ch-rule"></span></div>
+      <h2>In the Rubble, I Finally Got Still
+        <span class="sub">What Silence Teaches That Success Never Will</span>
+      </h2>
+      <p>Failure has a gift that success refuses to give you: <em>silence.</em> And in that silence, for the first time in years, I could hear myself think. Not the noise. Not the numbers. <strong>Me.</strong></p>
+      <div class="stanza">
+        <span class="stanza-line muted">I asked: What am I actually good at?</span>
+        <span class="stanza-line muted">I asked: What do I actually love?</span>
+        <span class="stanza-line gold">And then the one that changes everything —</span>
+        <span class="stanza-line hit">Who am I when the money's gone?</span>
+      </div>
+      <p>I can walk into a room and sense what someone is holding back — not what they say they want, but <em>what they're afraid to want.</em> I take a vision trapped in someone's mind and build it into something that moves, sells, scales.</p>
+      <p>And the moment that lives deepest in my chest has never been a revenue milestone. It's always been the same four words:</p>
+      <div class="verse">
+        <p>
+          "I changed my life<br>
+          because of you."<br><br>
+          That sentence.<br>
+          Not the account balance.<br>
+          That sentence.
+        </p>
+        <span class="attr">— The Only Number That Matters</span>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="ch"><span class="ch-num">04 — The Weapon</span><span class="ch-rule"></span></div>
+      <h2>Then AI Arrived. And Became My Translator.
+        <span class="sub">The Tool I Was Born to Use</span>
+      </h2>
+      <p>I didn't come to AI looking for shortcuts. I came looking for a translator — something that could finally speak the language my mind had always been thinking in.</p>
+      <div class="stanza">
+        <span class="stanza-line muted">Ideas that died in notebooks — now they breathe.</span>
+        <span class="stanza-line muted">Visions that needed a team — now they move alone.</span>
+        <span class="stanza-line muted">Strategies I could only whisper — now they sell.</span>
+        <span class="stanza-line hit">The ceiling? Gone.</span>
+      </div>
+      <div class="verse">
+        <p>
+          "Imagination is more important<br>
+          than knowledge."<br>
+          — Einstein said it in 1929.<br>
+          AI made it executable in 2026.<br>
+          I'm the one who knew<br>
+          what to imagine.
+        </p>
+        <span class="attr">— Aida's Amendment to the Canon</span>
+      </div>
+      <p>AI didn't make me someone new. It made me someone I couldn't <em>afford to be</em> before — the version of myself that finally has the tools to match the vision.</p>
+    </section>
+
+    <section class="sec">
+      <div class="ch"><span class="ch-num">05 — The Return</span><span class="ch-rule"></span></div>
+      <h2>This Comeback Isn't for the Crowd.
+        <span class="sub">The Marathon Continues — Different Shoes, Different Road</span>
+      </h2>
+      <p>The first comeback was for the money. This one is for the meaning. There's a difference — and if you've ever lost everything, <em>you know exactly what that difference feels like in your chest.</em></p>
+      <div class="stanza">
+        <span class="stanza-line muted">I'm not here to prove anything to anyone.</span>
+        <span class="stanza-line gold">I'm here because I finally know what I'm for.</span>
+        <span class="stanza-line muted">And the world is asking for exactly that.</span>
+        <span class="stanza-line hit">Right now. This era. This moment.</span>
+      </div>
+      <div class="pillars">
+        <div class="pillar"><span class="p-word">SYSTEM</span><p class="p-title">Build what works while you rest</p><p class="p-desc">Infrastructure, not hustle. Architecture, not grind.</p></div>
+        <div class="pillar"><span class="p-word">LEGACY</span><p class="p-title">From the root, not the trend</p><p class="p-desc">What holds when markets shift. What outlives the algorithm.</p></div>
+        <div class="pillar"><span class="p-word">MEANING</span><p class="p-title">The kind of rich that outlives the money</p><p class="p-desc">"I changed my life because of you." That's the whole business model.</p></div>
+      </div>
+      <div class="verse">
+        <p>
+          "I'm not here to get rich again.<br>
+          I'm here to build something<br>
+          I'd be proud of<br>
+          even if it never made a dollar.<br><br>
+          Lucky for both of us —<br>
+          it will."
+        </p>
+        <span class="attr">— Aida Xu · 2026</span>
+      </div>
+    </section>
+
+    <div class="closing">
+      <div class="closing-orb"></div>
+      <div class="closing-label">— This Is Where It Begins —</div>
+      <p class="closing-title">If you've been sitting on a gift<br>you don't know how to <em>sell</em> —</p>
+      <p class="closing-body">I've spent years learning to turn potential into product, vision into velocity, and ideas into income. I know what it feels like to have everything in your head and nothing in your hands. That's exactly what I built my work to fix.</p>
+      <a href="#" class="cta">Let's Begin · เริ่มต้นด้วยกัน →</a>
+    </div>
+  </main>
+  <footer><span>AIDA XU · The Sovereign Architecture</span><span style="color:var(--txt3)">Launch Essay · 2026</span></footer>
+</div>
+
+<script>
+function switchLang(lang) {
+  var th = document.getElementById('th-page');
+  var en = document.getElementById('en-page');
+  var btnTh = document.getElementById('btn-th');
+  var btnEn = document.getElementById('btn-en');
+  var out = lang === 'th' ? en : th;
+  var into = lang === 'th' ? th : en;
+  document.body.className = lang === 'th' ? 'th-mode' : 'en-mode';
+  btnTh.className = 'lang-btn' + (lang === 'th' ? ' active' : '');
+  btnEn.className = 'lang-btn' + (lang === 'en' ? ' active' : '');
+  out.classList.remove('shown');
+  setTimeout(function() {
+    out.classList.remove('visible');
+    into.classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        into.classList.add('shown');
+      });
+    });
+  }, 380);
+}
+</script>
+</body>
+</html>
